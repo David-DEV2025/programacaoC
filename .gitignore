@@ -1,0 +1,10 @@
+# Ignorar executáveis e builds
+*.exe
+*.obj
+*.o
+*.out
+*.log
+
+# VS Code
+.vscode/
+!.vscode/tasks.json
