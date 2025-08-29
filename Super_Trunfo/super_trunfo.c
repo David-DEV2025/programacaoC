@@ -1,7 +1,7 @@
 /*
-    Desafio Super Trunfo - Nível Novato (Etapa 1)
+    Desafio Super Trunfo Países - Nível Novato (Etapa 1)
     ---------------------------------------------
-    Objetivo:
+    Objetivo / Tema 1:
     - Cadastrar duas cartas do jogo "Super Trunfo de Países" lendo os dados do usuário
       e exibir as informações formatadas na tela.
 
