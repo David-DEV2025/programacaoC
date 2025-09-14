@@ -32,19 +32,19 @@ int main() {
     char cidade1[30], cidade2[30];
     //int populacao1, populacao2; // movido do nível Novato para Nível Mestre
     int pontos1, pontos2;
-    float area1, area2;
-    float pib1, pib2; //entrada em bilhões
+    double area1, area2;
+    double pib1, pib2; //entrada em bilhões
 
     //Declaração de variáveis das cartas (Mestre)
     unsigned long int populacao1, populacao2;
     
     // Nível Aventureiro
-    float densidade1, densidade2;
-    float pib_per_capita1, pib_per_capita2;
+    double densidade1, densidade2;
+    double pib_per_capita1, pib_per_capita2;
 
     // Nível Mestre
-    float super1, super2;
-            
+    double super1, super2;
+
     // Entrada de dados - carta 1
     printf("Cadastro da Carta 01\n");
 
@@ -56,28 +56,28 @@ int main() {
 
     printf("Digite o nome da Cidade (sem espaços): ");
     scanf("%29s", cidade1);
-
+    
     printf("Digite o número de habitantes: ");
     scanf("%lu", &populacao1); // %lu para unsigned long int
 
     printf("Digite a área da cidade em km2: ");
-    scanf("%f", &area1);
+    scanf("%lf", &area1);
 
     printf("Digite o PIB da Cidade (em bilhões de reais): ");
-    scanf("%f", &pib1);
+    scanf("%lf", &pib1);
 
     printf("Digite o número de pontos turísticos na cidade: ");
     scanf("%d", &pontos1);
 
     // Cálculos dos atributos derivados - Carta 1
-    densidade1 = (float)populacao1 / area1; // hab/km²
-    pib_per_capita1 = (pib1*1000000000.0f) / (float)populacao1; // R$/hab
-    super1 = (float)populacao1
+    densidade1 = (area1 > 0.0) ? (double)populacao1 / area1 : 0.0; // hab/km²
+    pib_per_capita1 = (populacao1 > 0) ? (pib1*1000000000.0) / (double)populacao1 : 0.0; // R$/hab
+    super1 = (double)populacao1
            + area1
-           + (pib1 * 1000000000.0f)
-           + (float)pontos1
+           + (pib1 * 1000000000.0)
+           + (double)pontos1
            + pib_per_capita1
-           + (1.0f / densidade1);  // menor densidade => maior termo
+           + ((densidade1 > 0.0) ? 1.0/densidade1 : 0.0);  // menor densidade => maior termo
 
     // Entrada de dados - carta 2
     printf("\nCadastro da Carta 02\n");
@@ -95,23 +95,23 @@ int main() {
     scanf("%lu", &populacao2); // %lu para unsigned long int
 
     printf("Digite a área da cidade em km2: ");
-    scanf("%f", &area2);
+    scanf("%lf", &area2);
 
     printf("Digite o PIB da Cidade (em bilhões de reais): ");
-    scanf("%f", &pib2);
+    scanf("%lf", &pib2);
 
     printf("Digite o número de pontos turísticos na cidade: ");
     scanf("%d", &pontos2);
 
     // Cálculos dos atributos derivados - Carta 2
-    densidade2 = (float)populacao2 / area2; // hab/km²
-    pib_per_capita2 = (pib2*1000000000.0f) / (float)populacao2; // reais por habitante
-    super2 = (float)populacao2
+    densidade2 = (area2 > 0.0) ? (double)populacao2 / area2 : 0.0; // hab/km²
+    pib_per_capita2 = (populacao2 > 0) ? (pib2*1000000000.0) / (double)populacao2 : 0.0; // reais por habitante
+    super2 = (double)populacao2
            + area2
-           + (pib2 * 1000000000.0f)
-           + (float)pontos2
+           + (pib2 * 1000000000.0)
+           + (double)pontos2
            + pib_per_capita2
-           + (1.0f / densidade2);
+           + ((densidade2 > 0.0) ? 1.0/densidade2 : 0.0);
 
     // Saída de dados - carta 1
     printf("\nCarta 1:\n");
