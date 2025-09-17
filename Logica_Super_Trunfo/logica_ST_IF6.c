@@ -11,4 +11,5 @@ int main(){
     if (resultado == 0){
         printf("O número é par\n");
     }
+    return 0;
 }

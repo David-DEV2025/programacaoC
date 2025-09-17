@@ -8,4 +8,5 @@ int main(){
     if (idade1 != idade2) {
         printf("As Pessoas tem idades diferentes\n");
     }
+    return 0;
 }

@@ -19,5 +19,7 @@ int main(){
     }
 
     printf("Fora do if\n");
+    
+    return 0;
 }
 

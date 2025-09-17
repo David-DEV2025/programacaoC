@@ -10,6 +10,8 @@ int main(){
         printf("Você é maior de idade.\n");
         printf("Dentro IF\n");
     }
-        printf("Fora IF\n");    
+        printf("Fora IF\n");
+        
+    return 0;    
 }
 

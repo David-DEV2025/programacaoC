@@ -7,4 +7,5 @@ int main(){
     if (temperatura >= 30.0) {
         printf("Está calor\n");
     }      
+    return 0;
 }

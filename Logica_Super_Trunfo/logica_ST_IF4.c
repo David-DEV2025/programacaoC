@@ -8,4 +8,6 @@ int main (){
         printf("Parabéns, você passou!\n");
     }
     printf("Fora IF\n");
+    
+    return 0;
 }
