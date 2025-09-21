@@ -1,9 +1,29 @@
+/*
+    Desafio Super Trunfo Países - Nível Novato (Etapa 1)
+    ---------------------------------------------
+    Objetivo / Tema 1:
+    - Cadastrar duas cartas do jogo "Super Trunfo de Países" lendo os dados do usuário
+      e exibir as informações formatadas na tela.
+
+    Para cada carta, o programa lê:
+    - Estado: uma letra de 'A' a 'H' (char)
+    - Código da Carta: ex. A01, B03 (string)
+    - Nome da Cidade: nome da cidade (string)
+    - População: número de habitantes (int)
+    - Área (em km²): área da cidade (float)
+    - PIB: Produto Interno Bruto (float)
+    - Número de Pontos Turísticos: quantidade (int)
+
+    Regras desta etapa:
+    - Sem estruturas de repetição (for/while) e sem decisões (if/else).
+    - Sequência simples de leitura e exibição.
+    - Saída clara, uma informação por linha, para cada carta.
+
+    Observação:
+    - Este código foca apenas em entrada e saída de dados, sem comparações entre cartas.
+*/
+
 #include <stdio.h>
-
-// Comparacao usando apenas if e else
-
-// Definição do atributo de comparação para o Nível Novato - 2ª etapa
-#define ATRIBUTO_PIB_PER_CAPITA 1
 
 int main() {
     // Declaração de variáveis das cartas (Novato e Aventureiro)
@@ -24,7 +44,7 @@ int main() {
 
     // Nível Mestre
     double super1, super2;
-            
+
     // Entrada de dados - carta 1
     printf("Cadastro da Carta 01\n");
 
@@ -57,7 +77,7 @@ int main() {
            + (pib1 * 1000000000.0)
            + (double)pontos1
            + pib_per_capita1
-           + ((densidade1 > 0.0) ? 1.0/densidade1 : 0.0);
+           + ((densidade1 > 0.0) ? 1.0/densidade1 : 0.0);  // menor densidade => maior termo
 
     // Entrada de dados - carta 2
     printf("\nCadastro da Carta 02\n");
@@ -119,17 +139,25 @@ int main() {
     printf("PIB per Capita: %.2f reais\n", pib_per_capita2);
     printf("Super Poder: %.2f\n", super2);
 
-    // Comparacao Nível Novato
-    // Atributo escolhido: PIB per Capita (maior vence)
-    printf("\nComparacao de Cartas (Atributo: PIB per Capita)\n\n");
-    printf("Carta 1 (%s): %.2f reais\n", cidade1, pib_per_capita1);
-    printf("Carta 2 (%s): %.2f reais\n", cidade2, pib_per_capita2);
+    // Comparacoes (1 = Carta 1 venceu; 0 = Carta 2 venceu)
+    // Regra: densidade -> menor vence; demais -> maior vence
+    {
+        int v_pop   = (populacao1 > populacao2);
+        int v_area  = (area1 > area2);
+        int v_pib   = (pib1 > pib2);                        // ambos em bilhoes
+        int v_pts   = (pontos1 > pontos2);
+        int v_dens  = (densidade1 < densidade2);            // menor vence
+        int v_pcap  = (pib_per_capita1 > pib_per_capita2);
+        int v_super = (super1 > super2);
 
-    // OBS: não há tratamento para empate (se os valores forem iguais, a Carta 2 vence)
-    if (pib_per_capita1 > pib_per_capita2) {
-        printf("Resultado: Carta 1 (%s) venceu!\n", cidade1);
-    } else {
-        printf("Resultado: Carta 2 (%s) venceu!\n", cidade2);
+        printf("\nComparacao de Cartas:\n\n");
+        printf("Populacao: Carta %d venceu (%d)\n", v_pop ? 1 : 2, v_pop);
+        printf("Area: Carta %d venceu (%d)\n", v_area ? 1 : 2, v_area);
+        printf("PIB: Carta %d venceu (%d)\n", v_pib ? 1 : 2, v_pib);
+        printf("Pontos Turisticos: Carta %d venceu (%d)\n", v_pts ? 1 : 2, v_pts);
+        printf("Densidade Populacional: Carta %d venceu (%d)\n", v_dens ? 1 : 2, v_dens);
+        printf("PIB per Capita: Carta %d venceu (%d)\n", v_pcap ? 1 : 2, v_pcap);
+        printf("Super Poder: Carta %d venceu (%d)\n", v_super ? 1 : 2, v_super);
     }
       
     return 0;
