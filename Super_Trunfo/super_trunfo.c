@@ -1,8 +1,12 @@
 #include <stdio.h>
 
-// Comparacao usando apenas if e else
+// Desafio Super Trunfo - Países
+// Tema 2 - Comparação das Cartas
+// Este código implementa a comparação entre duas cartas
+// usando estruturas de decisão if e else.
+// Atributo escolhido: PIB per Capita (maior vence)
+// OBS: não há tratamento para empate (se os valores forem iguais, a Carta 2 vence)
 
-// Definição do atributo de comparação para o Nível Novato - 2ª etapa
 #define ATRIBUTO_PIB_PER_CAPITA 1
 
 int main() {
@@ -13,9 +17,9 @@ int main() {
     //int populacao1, populacao2; // movido do nível Novato para Nível Mestre
     int pontos1, pontos2;
     double area1, area2;
-    double pib1, pib2; //entrada em bilhões
+    double pib1, pib2; // entrada em bilhões
 
-    //Declaração de variáveis das cartas (Mestre)
+    // Declaração de variáveis das cartas (Mestre)
     unsigned long int populacao1, populacao2;
     
     // Nível Aventureiro
@@ -50,14 +54,32 @@ int main() {
     scanf("%d", &pontos1);
 
     // Cálculos dos atributos derivados - Carta 1
-    densidade1 = (area1 > 0.0) ? (double)populacao1 / area1 : 0.0; // hab/km²
-    pib_per_capita1 = (populacao1 > 0) ? (pib1*1000000000.0) / (double)populacao1 : 0.0; // R$/hab
-    super1 = (double)populacao1
-           + area1
-           + (pib1 * 1000000000.0)
-           + (double)pontos1
-           + pib_per_capita1
-           + ((densidade1 > 0.0) ? 1.0/densidade1 : 0.0);
+    if (area1 > 0.0) {
+        densidade1 = (double)populacao1 / area1;
+    } else {
+        densidade1 = 0.0;
+    }
+
+    if (populacao1 > 0) {
+        pib_per_capita1 = (pib1 * 1000000000.0) / (double)populacao1;
+    } else {
+        pib_per_capita1 = 0.0;
+    }
+
+    if (densidade1 > 0.0) {
+        super1 = (double)populacao1
+               + area1
+               + (pib1 * 1000000000.0)
+               + (double)pontos1
+               + pib_per_capita1
+               + (1.0 / densidade1);
+    } else {
+        super1 = (double)populacao1
+               + area1
+               + (pib1 * 1000000000.0)
+               + (double)pontos1
+               + pib_per_capita1;
+    }
 
     // Entrada de dados - carta 2
     printf("\nCadastro da Carta 02\n");
@@ -84,21 +106,39 @@ int main() {
     scanf("%d", &pontos2);
 
     // Cálculos dos atributos derivados - Carta 2
-    densidade2 = (area2 > 0.0) ? (double)populacao2 / area2 : 0.0; // hab/km²
-    pib_per_capita2 = (populacao2 > 0) ? (pib2*1000000000.0) / (double)populacao2 : 0.0; // reais por habitante
-    super2 = (double)populacao2
-           + area2
-           + (pib2 * 1000000000.0)
-           + (double)pontos2
-           + pib_per_capita2
-           + ((densidade2 > 0.0) ? 1.0/densidade2 : 0.0);
+    if (area2 > 0.0) {
+        densidade2 = (double)populacao2 / area2;
+    } else {
+        densidade2 = 0.0;
+    }
+
+    if (populacao2 > 0) {
+        pib_per_capita2 = (pib2 * 1000000000.0) / (double)populacao2;
+    } else {
+        pib_per_capita2 = 0.0;
+    }
+
+    if (densidade2 > 0.0) {
+        super2 = (double)populacao2
+               + area2
+               + (pib2 * 1000000000.0)
+               + (double)pontos2
+               + pib_per_capita2
+               + (1.0 / densidade2);
+    } else {
+        super2 = (double)populacao2
+               + area2
+               + (pib2 * 1000000000.0)
+               + (double)pontos2
+               + pib_per_capita2;
+    }
 
     // Saída de dados - carta 1
     printf("\nCarta 1:\n");
     printf("Estado: %c\n", estado1);
     printf("Código: %s\n", codigo1);
     printf("Nome da Cidade: %s\n", cidade1);
-    printf("População: %lu\n", populacao1); // %lu para unsigned long int
+    printf("População: %lu\n", populacao1);
     printf("Área: %.2f km2\n", area1);
     printf("PIB: %.2f bilhões de reais\n", pib1);
     printf("Número de Pontos Turísticos: %d\n", pontos1);
@@ -111,7 +151,7 @@ int main() {
     printf("Estado: %c\n", estado2);
     printf("Código: %s\n", codigo2);
     printf("Nome da Cidade: %s\n", cidade2);
-    printf("População: %lu\n", populacao2); // %lu para unsigned long int
+    printf("População: %lu\n", populacao2);
     printf("Área: %.2f km2\n", area2);
     printf("PIB: %.2f bilhões de reais\n", pib2);
     printf("Número de Pontos Turísticos: %d\n", pontos2);
@@ -125,7 +165,6 @@ int main() {
     printf("Carta 1 (%s): %.2f reais\n", cidade1, pib_per_capita1);
     printf("Carta 2 (%s): %.2f reais\n", cidade2, pib_per_capita2);
 
-    // OBS: não há tratamento para empate (se os valores forem iguais, a Carta 2 vence)
     if (pib_per_capita1 > pib_per_capita2) {
         printf("Resultado: Carta 1 (%s) venceu!\n", cidade1);
     } else {
