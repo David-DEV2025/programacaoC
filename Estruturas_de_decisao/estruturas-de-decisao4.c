@@ -21,4 +21,5 @@ int main (){
     } else {
         printf("Você é uma criança!\n");
     }
+    return 0;
 }

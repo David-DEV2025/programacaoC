@@ -27,4 +27,5 @@ int main(){
     } else {
         printf("O conceito é F!\n");
     }
+    return 0;
 }

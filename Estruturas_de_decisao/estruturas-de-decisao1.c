@@ -10,4 +10,5 @@ int main (){
             // Código a ser executado se condicao1 e condicao2 forem verdadeiras
         }
     }
+    return 0;
 }
