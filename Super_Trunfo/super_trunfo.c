@@ -161,7 +161,7 @@ int main() {
 
     // Comparacao Nível Novato
     // Atributo escolhido: PIB per Capita (maior vence)
-    printf("\nComparacao de Cartas (Atributo: PIB per Capita)\n\n");
+    printf("\nComparacao de Cartas (Atributo: PIB per Capita)\n");
     printf("Carta 1 (%s): %.2f reais\n", cidade1, pib_per_capita1);
     printf("Carta 2 (%s): %.2f reais\n", cidade2, pib_per_capita2);
 
