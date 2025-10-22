@@ -1,68 +1,121 @@
 #include <stdio.h>
 
-int main() {
-    // Tabuleiro 5x5 (Novato)
-    int tabuleiro[5][5];
-    int i, j;
+#define TAM       10   // tamanho do tabuleiro 10x10
+#define TAM_NAVIO 3    // navio de tamanho 3
+#define AGUA      0    // célula vazia
+#define OCUPADO   3    // célula com navio
 
-    // Inicializa com 0 (água)
-    for (i = 0; i < 5; i++) {
-        for (j = 0; j < 5; j++) {
-            tabuleiro[i][j] = 0;
+// Inicializa o tabuleiro com 0 (água)
+void inicializar_tabuleiro(int tab[TAM][TAM]) {
+    int linha, coluna;
+    for (linha = 0; linha < TAM; linha++) {
+        for (coluna = 0; coluna < TAM; coluna++) {
+            tab[linha][coluna] = AGUA;
         }
     }
+}
 
-    // Tamanho fixo dos navios no Novato
-    int tamanho = 3;
+// Verifica se é possível posicionar um navio (tamanho fixo = 3)
+// orientacao: 'H' (horizontal), 'V' (vertical),
+//              'D' (diagonal principal ↘), 'I' (diagonal inversa ↙)
+int pode_posicionar(int tab[TAM][TAM], int linha, int coluna, char orientacao) {
+    int i;
+    for (i = 0; i < TAM_NAVIO; i++) {
+        int linhaAtual = linha;
+        int colunaAtual = coluna;
 
-    // Coordenadas iniciais (ajuste conforme quiser testar)
-    // Navio horizontal ocupa: (linhaH, colunaH), (linhaH, colunaH+1), (linhaH, colunaH+2)
-    // Navio vertical   ocupa: (linhaV, colunaV), (linhaV+1, colunaV), (linhaV+2, colunaV)
-    int linhaH = 1, colunaH = 1; // exemplo -> (1,1),(1,2),(1,3)
-    int linhaV = 0, colunaV = 4; // exemplo -> (0,4),(1,4),(2,4)
-
-    // ---- Valida limites ----
-    // Horizontal cabe na linha?
-    if (linhaH < 0 || linhaH >= 5 || colunaH < 0 || (colunaH + tamanho - 1) >= 5) {
-        printf("Falha: navio horizontal sai do limite.\n");
-        return 1;
-    }
-    // Vertical cabe na coluna?
-    if (colunaV < 0 || colunaV >= 5 || linhaV < 0 || (linhaV + tamanho - 1) >= 5) {
-        printf("Falha: navio vertical sai do limite.\n");
-        return 1;
-    }
-
-    // ---- Verifica sobreposição antes de posicionar ----
-    for (i = 0; i < tamanho; i++) {
-        if (tabuleiro[linhaH][colunaH + i] != 0) {
-            printf("Falha: sobreposição no navio horizontal.\n");
-            return 1;
+        if (orientacao == 'H') {
+            colunaAtual = coluna + i;
+        } else if (orientacao == 'V') {
+            linhaAtual = linha + i;
+        } else if (orientacao == 'D') {         // ↘ (principal)
+            linhaAtual = linha + i;
+            colunaAtual = coluna + i;
+        } else if (orientacao == 'I') {         // ↙ (inversa)
+            linhaAtual = linha + i;
+            colunaAtual = coluna - i;
+        } else {
+            return 0; // orientação inválida
         }
-        if (tabuleiro[linhaV + i][colunaV] != 0) {
-            printf("Falha: sobreposição no navio vertical.\n");
-            return 1;
+
+        // Limites
+        if (linhaAtual < 0 || linhaAtual >= TAM || colunaAtual < 0 || colunaAtual >= TAM) {
+            return 0;
+        }
+        // Sobreposição
+        if (tab[linhaAtual][colunaAtual] != AGUA) {
+            return 0;
         }
     }
+    return 1; // pode posicionar
+}
 
-    // ---- Posiciona para garantir checagem de sobreposição (interno ao Novato) ----
-    for (i = 0; i < tamanho; i++) {
-        tabuleiro[linhaH][colunaH + i] = 3; // marca internamente; saída oficial é em coordenadas
-    }
-    for (i = 0; i < tamanho; i++) {
-        tabuleiro[linhaV + i][colunaV] = 3;
-    }
+// Posiciona o navio assumindo que pode_posicionar == 1
+void posicionar_navio(int tab[TAM][TAM], int linha, int coluna, char orientacao) {
+    int i;
+    for (i = 0; i < TAM_NAVIO; i++) {
+        int linhaAtual = linha;
+        int colunaAtual = coluna;
 
-    // ---- Saída oficial do Novato: coordenadas dos navios ----
-    printf("Coordenadas do navio horizontal (tamanho %d):\n", tamanho);
-    for (i = 0; i < tamanho; i++) {
-        printf("(%d,%d)\n", linhaH, colunaH + i);
-    }
+        if (orientacao == 'H') {
+            colunaAtual = coluna + i;
+        } else if (orientacao == 'V') {
+            linhaAtual = linha + i;
+        } else if (orientacao == 'D') {         // ↘
+            linhaAtual = linha + i;
+            colunaAtual = coluna + i;
+        } else if (orientacao == 'I') {         // ↙
+            linhaAtual = linha + i;
+            colunaAtual = coluna - i;
+        }
 
-    printf("\nCoordenadas do navio vertical (tamanho %d):\n", tamanho);
-    for (i = 0; i < tamanho; i++) {
-        printf("(%d,%d)\n", linhaV + i, colunaV);
+        tab[linhaAtual][colunaAtual] = OCUPADO;
     }
+}
+
+// Imprime o tabuleiro completo (0 = água, 3 = navio)
+void imprimir_tabuleiro(int tab[TAM][TAM]) {
+    int linha, coluna;
+    for (linha = 0; linha < TAM; linha++) {
+        for (coluna = 0; coluna < TAM; coluna++) {
+            printf("%d ", tab[linha][coluna]); // padrão pedido no repositório
+        }
+        printf("\n");
+    }
+}
+
+int main(void) {
+    int tabuleiro[TAM][TAM];
+    inicializar_tabuleiro(tabuleiro);
+
+    // --- Coordenadas (ajuste livre para testes) ---
+    // 1) Horizontal ↔: (2,3) (2,4) (2,5)
+    int linhaH = 2, colunaH = 3;
+
+    // 2) Vertical   ↕: (5,7) (6,7) (7,7)
+    int linhaV = 5, colunaV = 7;
+
+    // 3) Diagonal ↘ (principal): (0,0) (1,1) (2,2)
+    int linhaD = 0, colunaD = 0;
+
+    // 4) Diagonal ↙ (inversa): (0,9) (1,8) (2,7)
+    int linhaI = 0, colunaI = 9;
+
+    // --- Validação e posicionamento ---
+    if (pode_posicionar(tabuleiro, linhaH, colunaH, 'H') == 0) { printf("Falha H\n"); return 1; }
+    posicionar_navio(tabuleiro, linhaH, colunaH, 'H');
+
+    if (pode_posicionar(tabuleiro, linhaV, colunaV, 'V') == 0) { printf("Falha V\n"); return 1; }
+    posicionar_navio(tabuleiro, linhaV, colunaV, 'V');
+
+    if (pode_posicionar(tabuleiro, linhaD, colunaD, 'D') == 0) { printf("Falha D\n"); return 1; }
+    posicionar_navio(tabuleiro, linhaD, colunaD, 'D');
+
+    if (pode_posicionar(tabuleiro, linhaI, colunaI, 'I') == 0) { printf("Falha I\n"); return 1; }
+    posicionar_navio(tabuleiro, linhaI, colunaI, 'I');
+
+    // --- Exibição completa do tabuleiro (0/3) ---
+    imprimir_tabuleiro(tabuleiro);
 
     return 0;
 }
