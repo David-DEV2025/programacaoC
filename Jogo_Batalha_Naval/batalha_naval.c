@@ -1,41 +1,67 @@
 #include <stdio.h>
 
 int main() {
-    int board[10][10];
+    // Tabuleiro 5x5 (Novato)
+    int tabuleiro[5][5];
     int i, j;
 
-    // Inicializa o tabuleiro com 0 (água)
-    for (i = 0; i < 10; i++) {
-        for (j = 0; j < 10; j++) {
-            board[i][j] = 0;
+    // Inicializa com 0 (água)
+    for (i = 0; i < 5; i++) {
+        for (j = 0; j < 5; j++) {
+            tabuleiro[i][j] = 0;
         }
     }
 
-    // Vetores para representar os navios (tamanho 3)
-    int navioHorizontal[3] = {3, 3, 3};
-    int navioVertical[3] = {3, 3, 3};
+    // Tamanho fixo dos navios no Novato
+    int tamanho = 3;
 
-    // Coordenadas iniciais fixas
-    int linhaH = 2, colunaH = 3;
-    int linhaV = 5, colunaV = 7;
+    // Coordenadas iniciais (ajuste conforme quiser testar)
+    // Navio horizontal ocupa: (linhaH, colunaH), (linhaH, colunaH+1), (linhaH, colunaH+2)
+    // Navio vertical   ocupa: (linhaV, colunaV), (linhaV+1, colunaV), (linhaV+2, colunaV)
+    int linhaH = 1, colunaH = 1; // exemplo -> (1,1),(1,2),(1,3)
+    int linhaV = 0, colunaV = 4; // exemplo -> (0,4),(1,4),(2,4)
 
-    // Posiciona navio horizontal
-    for (i = 0; i < 3; i++) {
-        board[linhaH][colunaH + i] = navioHorizontal[i];
+    // ---- Valida limites ----
+    // Horizontal cabe na linha?
+    if (linhaH < 0 || linhaH >= 5 || colunaH < 0 || (colunaH + tamanho - 1) >= 5) {
+        printf("Falha: navio horizontal sai do limite.\n");
+        return 1;
+    }
+    // Vertical cabe na coluna?
+    if (colunaV < 0 || colunaV >= 5 || linhaV < 0 || (linhaV + tamanho - 1) >= 5) {
+        printf("Falha: navio vertical sai do limite.\n");
+        return 1;
     }
 
-    // Posiciona navio vertical
-    for (i = 0; i < 3; i++) {
-        board[linhaV + i][colunaV] = navioVertical[i];
-    }
-
-    // Exibe o tabuleiro
-    printf("Tabuleiro de Batalha Naval:\n\n");
-    for (i = 0; i < 10; i++) {
-        for (j = 0; j < 10; j++) {
-            printf("%d ", board[i][j]);
+    // ---- Verifica sobreposição antes de posicionar ----
+    for (i = 0; i < tamanho; i++) {
+        if (tabuleiro[linhaH][colunaH + i] != 0) {
+            printf("Falha: sobreposição no navio horizontal.\n");
+            return 1;
         }
-        printf("\n");
+        if (tabuleiro[linhaV + i][colunaV] != 0) {
+            printf("Falha: sobreposição no navio vertical.\n");
+            return 1;
+        }
+    }
+
+    // ---- Posiciona para garantir checagem de sobreposição (interno ao Novato) ----
+    for (i = 0; i < tamanho; i++) {
+        tabuleiro[linhaH][colunaH + i] = 3; // marca internamente; saída oficial é em coordenadas
+    }
+    for (i = 0; i < tamanho; i++) {
+        tabuleiro[linhaV + i][colunaV] = 3;
+    }
+
+    // ---- Saída oficial do Novato: coordenadas dos navios ----
+    printf("Coordenadas do navio horizontal (tamanho %d):\n", tamanho);
+    for (i = 0; i < tamanho; i++) {
+        printf("(%d,%d)\n", linhaH, colunaH + i);
+    }
+
+    printf("\nCoordenadas do navio vertical (tamanho %d):\n", tamanho);
+    for (i = 0; i < tamanho; i++) {
+        printf("(%d,%d)\n", linhaV + i, colunaV);
     }
 
     return 0;
